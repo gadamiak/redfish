@@ -1,0 +1,16 @@
+---
+# tasks file for roles/redfish
+
+- name: "{{ item.name }}"
+  uri:
+    url: "https://{{ bmc_host }}/redfish/v1/{{ item.url }}/"
+    method: "{{ item.method | default('GET', true) }}"
+    status_code: "{{ item.status | default('200', true) }}"
+    body: "{{ item.body | default(None) | to_json }}"
+    body_format: json
+    user: "{{ bmc_admin }}"
+    password: "{{ bmc_admin_pass }}"
+    force_basic_auth: true
+    validate_certs: false
+  delegate_to: localhost
+  tags: always
