@@ -14,4 +14,15 @@
     validate_certs: false
   delegate_to: localhost
   register: "{{ item.register | default('redfish') }}"
+  # Since 2.3 Ansible warns about Jinja2 markers in the when/until. A
+  # workaround is to evaluate the condition via a variable
+  vars:
+    until_condition: "{{ item.until | default(true) }}"
+    until_retries: "{{ item.retries | default(3) }}"
+    until_delay: "{{ item.delay | default(10) }}"
+    when_condition: "{{ item.when | default(true) }}"
+  when: when_condition
+  until: until_condition
+  retries: "{{ until_retries }}"
+  delay: "{{ until_delay }}"
   tags: always
