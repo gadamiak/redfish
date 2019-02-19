@@ -13,4 +13,5 @@
     force_basic_auth: true
     validate_certs: false
   delegate_to: localhost
+  register: "{{ item.register | default('redfish') }}"
   tags: always
